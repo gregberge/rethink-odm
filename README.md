@@ -46,6 +46,32 @@ Create a new rethinkOdm client. To know avalaible options, please refer to [reth
 var ro = rethinkOdm({host: 'localhost'});
 ```
 
+#### Events
+
+##### error
+
+Emitted when an error occurs in the connection.
+
+```js
+ro.on('error', function (err) {});
+```
+
+##### connect
+
+Emitted when the client is connected.
+
+```js
+ro.on('connect', function () {});
+```
+
+##### close
+
+Emmited when the connection is closed.
+
+```js
+ro.on('close', function () {});
+```
+
 ### ro.r
 
 Expose the rethinkdb module.
@@ -74,6 +100,7 @@ Create a new model.
 var User = ro.createModel({tableName: 'users'});
 ```
 
+
 ### Model.table()
 
 Return the table linked to the model.
@@ -82,7 +109,7 @@ Return the table linked to the model.
 ro.run(User.table().get('1a487dc0-f6ec-11e3-a3ac-0800200c9a66'));
 ```
 
-### new Model(data)
+### new Model([data])
 
 Create a new instance of the model.
 
@@ -101,6 +128,24 @@ user.insert().then(function (user) {
 });
 ```
 
+#### Events
+
+##### insert
+
+Emitted before the insert.
+
+```js
+model.on('insert', function (model) {});
+```
+
+##### inserted
+
+Emitted after the insert.
+
+```js
+model.on('inserted', function (model) {});
+```
+
 ### model.update([data], [cb])
 
 Update the model.
@@ -115,6 +160,24 @@ user.update().then(function (user) {
 });
 ```
 
+#### Events
+
+##### update
+
+Emitted before the update.
+
+```js
+model.on('update', function (model, data) {});
+```
+
+##### updated
+
+Emitted after the update.
+
+```js
+model.on('update', function (model, data) {});
+```
+
 ### model.delete()
 
 Delete the model.
@@ -124,6 +187,24 @@ var user = new User({id: '1a487dc0-f6ec-11e3-a3ac-0800200c9a66'});
 user.delete().then(function () {
   // ...
 });
+```
+
+#### Events
+
+##### delete
+
+Emitted before the deletion.
+
+```js
+model.on('delete', function (model) {});
+```
+
+##### deleted
+
+Emitted after the deletion.
+
+```js
+model.on('deleted', function (model) {});
 ```
 
 ## License

@@ -1,4 +1,5 @@
-var expect = require('chai').expect;
+var expect = require('chai').use(require('sinon-chai')).expect;
+var sinon = require('sinon');
 var uuid = require('uuid');
 var rethinkOdm = require('../');
 
@@ -42,6 +43,13 @@ describe('Model', function () {
     });
   });
 
+  describe('#toJSON', function () {
+    it('should only return model attributes', function () {
+      var user = new User({name: 'Johnny'});
+      expect(user.toJSON()).to.eql({name: 'Johnny'});
+    });
+  });
+
   describe('#insert', function () {
     before(function (done) {
       ro.run(ro.r.table('users').insert({id: 'a'})).nodeify(done);
@@ -77,6 +85,23 @@ describe('Model', function () {
       .catch(function (err) {
         expect(err).to.be.instanceOf(Error);
         expect(err.message).to.match(/Duplicate primary key/);
+      })
+      .nodeify(done);
+    });
+
+    it('should emit events', function (done) {
+      var insertSpy = sinon.spy();
+      var insertedSpy = sinon.spy();
+      var user = new User({name: 'Marco'});
+      user.on('insert', insertSpy);
+      user.on('inserted', insertedSpy);
+
+      var insert = user.insert();
+
+      expect(insertSpy).to.be.calledWith(user);
+
+      insert.then(function () {
+        expect(insertedSpy).to.be.calledWith(user);
       })
       .nodeify(done);
     });
@@ -128,11 +153,32 @@ describe('Model', function () {
       })
       .nodeify(done);
     });
+
+    it('should emit events', function (done) {
+      var updateSpy = sinon.spy();
+      var updatedSpy = sinon.spy();
+      var user = new User({id: 'b', name: 'Marco'});
+      user.on('update', updateSpy);
+      user.on('updated', updatedSpy);
+
+      var update = user.update();
+
+      expect(updateSpy).to.be.calledWith(user, {id: 'b', name: 'Marco'});
+
+      update.then(function () {
+        expect(updatedSpy).to.be.calledWith(user, {id: 'b', name: 'Marco'});
+      })
+      .nodeify(done);
+    });
   });
 
   describe('#delete', function () {
     before(function (done) {
-      ro.run(ro.r.table('users').insert({id: 'c'})).nodeify(done);
+      ro.run(ro.r.table('users').insert({id: 'c'}))
+      .then(function () {
+        return ro.run(ro.r.table('users').insert({id: 'd'}));
+      })
+      .nodeify(done);
     });
 
     it('should delete the document', function (done) {
@@ -143,6 +189,23 @@ describe('Model', function () {
       })
       .then(function (userInDb) {
         expect(userInDb).to.be.null;
+      })
+      .nodeify(done);
+    });
+
+    it('should emit events', function (done) {
+      var deleteSpy = sinon.spy();
+      var deletedSpy = sinon.spy();
+      var user = new User({id: 'd', name: 'Marco'});
+      user.on('delete', deleteSpy);
+      user.on('deleted', deletedSpy);
+
+      var del = user.delete();
+
+      expect(deleteSpy).to.be.calledWith(user);
+
+      del.then(function () {
+        expect(deletedSpy).to.be.calledWith(user);
       })
       .nodeify(done);
     });
