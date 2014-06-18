@@ -138,7 +138,7 @@ describe('Model', function () {
     it('should delete the document', function (done) {
       var user = new User({id: 'c'});
       user.delete()
-      .then(function (user) {
+      .then(function () {
         return ro.run(ro.r.table('users').get('c'));
       })
       .then(function (userInDb) {
