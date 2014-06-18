@@ -98,12 +98,24 @@ describe('Model', function () {
 
       var insert = user.insert();
 
-      expect(insertSpy).to.be.calledWith(user);
-
       insert.then(function () {
+        expect(insertSpy).to.be.calledWith(user);
         expect(insertedSpy).to.be.calledWith(user);
       })
       .nodeify(done);
+    });
+
+    it('should be possible to throw errors in event', function (done) {
+      var user = new User({name: 'Marco'});
+      user.on('insert', function () {
+        throw new Error('error');
+      });
+
+      user.insert()
+      .nodeify(function (err) {
+        expect(err.message).to.equal('error');
+        done();
+      });
     });
   });
 
@@ -148,10 +160,10 @@ describe('Model', function () {
     it('should handle "Not found" errors', function (done) {
       var user = new User({id: 'x', foo: 'bar'});
       user.update()
-      .catch(function (err) {
+      .nodeify(function (err) {
         expect(err.message).to.equal('Not found');
-      })
-      .nodeify(done);
+        done();
+      });
     });
 
     it('should emit events', function (done) {
@@ -163,12 +175,24 @@ describe('Model', function () {
 
       var update = user.update();
 
-      expect(updateSpy).to.be.calledWith(user, {id: 'b', name: 'Marco'});
-
       update.then(function () {
+        expect(updateSpy).to.be.calledWith(user, {id: 'b', name: 'Marco'});
         expect(updatedSpy).to.be.calledWith(user, {id: 'b', name: 'Marco'});
       })
       .nodeify(done);
+    });
+
+    it('should be possible to throw errors in event', function (done) {
+      var user = new User({id: 'b', name: 'Marco'});
+      user.on('update', function () {
+        throw new Error('error');
+      });
+
+      user.update()
+      .nodeify(function (err) {
+        expect(err.message).to.equal('error');
+        done();
+      });
     });
   });
 
@@ -202,21 +226,33 @@ describe('Model', function () {
 
       var del = user.delete();
 
-      expect(deleteSpy).to.be.calledWith(user);
-
       del.then(function () {
+        expect(deleteSpy).to.be.calledWith(user);
         expect(deletedSpy).to.be.calledWith(user);
       })
       .nodeify(done);
     });
 
+    it('should be possible to throw errors in event', function (done) {
+      var user = new User({id: 'd', name: 'Marco'});
+      user.on('delete', function () {
+        throw new Error('error');
+      });
+
+      user.delete()
+      .nodeify(function (err) {
+        expect(err.message).to.equal('error');
+        done();
+      });
+    });
+
     it('should do nothing if document is not found', function (done) {
       var user = new User({id: 'xxx'});
       user.delete()
-      .catch(function (err) {
+      .nodeify(function (err) {
         expect(err).to.not.exists;
-      })
-      .nodeify(done);
+        done();
+      });
     });
   });
 });
