@@ -1,0 +1,33 @@
+{
+  "name": "rethink-odm",
+  "version": "0.0.0",
+  "description": "Simple Object Document Mapper for RethinkDB.",
+  "main": "index.js",
+  "dependencies": {
+    "pipe-event": "^0.1.0",
+    "rethinkdb": "^1.13.0-0"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.20.1"
+  },
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neoziro/rethink-odm.git"
+  },
+  "keywords": [
+    "rethinkdb",
+    "odm",
+    "orm",
+    "thinky"
+  ],
+  "author": "Greg Bergé <berge.greg@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/neoziro/rethink-odm/issues"
+  },
+  "homepage": "https://github.com/neoziro/rethink-odm"
+}
