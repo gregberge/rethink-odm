@@ -4,12 +4,14 @@
   "description": "Simple Object Document Mapper for RethinkDB.",
   "main": "index.js",
   "dependencies": {
+    "lodash": "^2.4.1",
     "pipe-event": "^0.1.0",
     "rethinkdb": "^1.13.0-0"
   },
   "devDependencies": {
     "chai": "^1.9.1",
-    "mocha": "^1.20.1"
+    "mocha": "^1.20.1",
+    "uuid": "^1.4.1"
   },
   "scripts": {
     "test": "mocha --recursive"
