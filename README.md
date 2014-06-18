@@ -17,7 +17,7 @@ npm install rethink-odm
 var ro = require('rethink-odm')();
 
 // Run command without waiting connection to be ready.
-ro.run(ro.r.table('users')).then(function (users) {
+ro.run(ro.r.now()).then(function (now) {
   // ...
 });
 
