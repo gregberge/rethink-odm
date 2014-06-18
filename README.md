@@ -59,18 +59,16 @@ ro.r.now();
 Run a command using the internal rethink odm connection. The advantage is that you don't have to wait connection to be ready.
 
 ```js
-ro.run(ro.r.now());
+ro.run(ro.r.now()).then(function (now) {
+  // ... 
+});
 ```
 
 ### ro.createModel(options)
 
 Create a new model.
 
-Options:
-
-```
-  {string} tableName Name of the table
-```
+- tableName: Name of the table
 
 ```js
 var User = ro.createModel({tableName: 'users'});
