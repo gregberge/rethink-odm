@@ -191,7 +191,7 @@ model.on('update', function (model, data) {});
 Emitted after the update.
 
 ```js
-model.on('update', function (model, data) {});
+model.on('updated', function (model, data) {});
 ```
 
 ### model.delete()
