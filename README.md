@@ -95,9 +95,25 @@ ro.run(ro.r.now()).then(function (now) {
 Create a new model.
 
 - tableName: Name of the table
+- hooks: Hooks
 
 ```js
 var User = ro.createModel({tableName: 'users'});
+```
+
+#### Hooks
+
+It's possible to add some hooks, hook are some listeners automatically applied at initialization.
+
+```js
+var User = ro.createModel({
+  tableName: 'users',
+  hooks: {
+    insert: function () {
+      if (! this.email) throw new Error('Email is required');
+    }
+  }
+});
 ```
 
 

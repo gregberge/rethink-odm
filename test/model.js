@@ -50,6 +50,22 @@ describe('Model', function () {
     });
   });
 
+  describe('hooks', function () {
+    it('should be possible to add hooks', function () {
+      var insertSpy = sinon.spy();
+      var Book = ro.createModel({
+        tableName: 'books',
+        hooks: {
+          insert: insertSpy
+        }
+      });
+      var book = new Book();
+
+      book.emit('insert', 'test');
+      expect(insertSpy).to.be.calledWith('test');
+    });
+  });
+
   describe('#insert', function () {
     before(function (done) {
       ro.run(ro.r.table('users').insert({id: 'a'})).nodeify(done);
