@@ -21,12 +21,12 @@ ro.run(ro.r.now()).then(function (now) {
   // ...
 });
 
-// Create the User model
+// Create the model "User".
 var User = ro.Model.extend({
   tableName: 'users'
 });
 
-// Create a new User
+// Create a new User.
 var user = new User({
   name: 'Johnny'
 });
