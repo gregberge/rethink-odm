@@ -31,8 +31,8 @@ var user = new User({
   name: 'Johnny'
 });
 
-// Save it.
-user.save().then(function (user) {
+// Create model.
+user.create().then(function (user) {
   // ...
 });
 
@@ -194,7 +194,7 @@ Emitted after the update.
 model.on('updated', function (model, data) {});
 ```
 
-### model.delete()
+### model.delete([cb])
 
 Delete the model.
 
